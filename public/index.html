@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome to Firebase Hosting</title>
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/4.6.0/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/4.6.0/firebase-auth.js"></script>
+    <script defer src="/__/firebase/4.6.0/firebase-database.js"></script>
+    <script defer src="/__/firebase/4.6.0/firebase-messaging.js"></script>
+    <script defer src="/__/firebase/4.6.0/firebase-storage.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="header">
+      <h1>
+        자양교회 청년 1부 생일자 명단
+      </h1>
+      <div date="thisWeek">
+        <h2>이번주 생일자</h2>
+      </div>
+    </div>
+    <div class="search">
+      <h3>이름으로 찾기</h3>
+      <input type="text" name="name" placeholder="이름?">  
+      <div class="searchList"></div>
+    </div>
+    <div id="list">
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyCszxCkzz0aWFt2qwA_xI7KD3HS6phAdyI",
+        authDomain: "jayang-da2b8.firebaseapp.com",
+        databaseURL: "https://jayang-da2b8.firebaseio.com",
+        projectId: "jayang-da2b8",
+        storageBucket: "jayang-da2b8.appspot.com",
+        messagingSenderId: "657190238435"
+      };
+      firebase.initializeApp(config);
+      var database = firebase.database();
+
+      // Initialize screen
+      var curr = new Date;
+      var firstday = new Date(curr.setDate(curr.getDate() - curr.getDay()));
+      var lastday = new Date(curr.setDate(curr.getDate() - curr.getDay()+6));
+      let firstday_4 = (firstday).toISOString().slice(0,10).replace(/-/g,"").substr(-4);
+      let lastday_4 = (lastday).toISOString().slice(0,10).replace(/-/g,"").substr(-4);
+      
+      document.querySelector('[date="thisWeek"] h2').innerHTML +=`(${firstday.getMonth()+1}.${+firstday.getDate()} ~ ${lastday.getMonth()+1}.${+lastday.getDate()})`;
+
+      const people = [];
+      firebase.database().ref('group/').once('value').then(function(snapshot) {
+          const allData = snapshot.val();
+          for(years in allData){
+            document.querySelector('#list').innerHTML += `<div class="peers" year="${years}"><li>${years}</li></div>`;
+            let peers = allData[years];
+            for(key in peers) {
+              let person = peers[key];
+              people.push(person);
+              let birth  = (person.birth || "00000000").toString().substr(-4);
+              document.querySelector(`#list [year="${person.peer}"]`).innerHTML += `<li>${person.name} : ${person.birth}</li>`;
+              if(birth >= firstday_4 && birth <= lastday_4) {
+                document.querySelector('[date="thisWeek"]').innerHTML += `<li>${person.name} : ${person.birth}</li>`;
+              }
+            }
+          }
+          })
+
+          function findMathes(wordToMatch, people){
+            if(wordToMatch =="") return [];
+            return people.filter(person => {
+              const regex = new RegExp(wordToMatch,'gi')
+              return person.name.match(regex);
+            });
+          }
+
+          function getPeopleList(event) {
+            let peopleList = findMathes(event.target.value,people);
+              console.log(peopleList);
+            const html  = peopleList.map(person => {
+
+              const regex = new RegExp(this.value,'gi')
+              const name = person.name.replace(regex,`<span class="hl">${this.value}</span>`)
+              return `
+              <li>
+                ${name},${person.birth}
+              </li>
+              `
+            }).join('');
+                document.querySelector('.searchList').innerHTML = html;
+          }
+
+          document.querySelector('input[name="name"]').addEventListener('keyup',getPeopleList)
+    </script>
+
+  </body>
+</html>

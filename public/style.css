@@ -1,0 +1,93 @@
+html,body {
+				font-family: 'Encode Sans Expanded', sans-serif;
+				font-size: 16px;
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				box-sizing: border-box;
+				max-width: 100%;
+			}
+	
+.header {
+	/*background: url(https://i.pinimg.com/736x/ea/81/9b/ea819b5f66c3ada9a419ffa1a0ba433c---birthday-birthday-images.jpg);*/
+	/*background-position: center;*/
+	/*background-repeat: no-repeat;*/
+	background: rgba(0,0,0,1);
+	color: rgba(255,255,255,.9);
+	padding-bottom: 1rem;
+	padding-left: 1rem;
+}
+
+div[date="thisWeek"] li {
+	font-size: 2rem;
+	text-shadow: 2px 2px rgba(255,255,255,0.3);
+}
+h1 {
+	margin: 0;
+	padding: 1rem;
+	text-align: center;
+	color: rgba(255,255,255,.9);
+}
+
+.search {
+	padding-left: 1rem;
+	display: flex;
+}
+
+.search input {
+	margin: 1rem;
+}
+
+.search .searchList {
+	display: flex;
+	max-width: 60%;
+	flex-wrap: wrap;
+	align-items: center;
+	/*justify-content: center;*/
+}
+#list {
+	display: flex;
+	/*flex-direction: column;*/
+	justify-content: space-between;
+	margin: .5rem;
+	
+	
+}
+#list .peers{
+	background: rgba(0,0,0,0.2);
+	margin: .2rem;
+	border-radius: 0.4rem;
+	padding: .4rem;
+
+}
+
+#list .peers:nth-child(odd){
+	background: rgba(0,0,0,0.08);
+	margin: .2rem;
+	border-radius: 0.4rem;
+	padding: .4rem;
+}
+
+#list .peers li{
+	margin: .3rem;
+	/*text-align: center;*/
+	transition: .3s;
+	border-bottom: 1px solid black;
+}
+
+#list .peers li:hover{
+	font-size: 1.2rem;
+	text-shadow: 1px 1px rgba(0,0,0,.3);
+	/*text-align: center;*/
+
+}
+
+#list .peers li:nth-child(1){
+	font-size: 2rem;
+	margin: .3rem;
+	text-align: center;
+}
+
+.hl {
+      background:#ffc600;
+}
